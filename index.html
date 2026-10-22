@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Power On 雪梨峰會手冊</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: harbour-navy masthead band + sticky tab rail; each tab is one reading column (~70ch) with side notes on wide screens */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14213a; --muted:#56637a; --line:#d9e0ea;
+  --accent:#0b62c4; --accent-soft:#e3eefb; --harbour:#0d2747; --harbour-ink:#eaf2ff;
+  --warn:#b25c00; --warn-soft:#fff2e0; --ok:#1d7a4b; --ok-soft:#e2f4ea;
+  --display:"Archivo","Noto Sans TC",system-ui,sans-serif;
+  --body:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1320; --surface:#131c2c; --ink:#e4eaf4; --muted:#9aa8bf; --line:#26324a;
+  --accent:#5aa2f2; --accent-soft:#16294a; --harbour:#08182e; --harbour-ink:#dce8ff;
+  --warn:#f0a24a; --warn-soft:#3a2711; --ok:#5bc58d; --ok-soft:#13301f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1320; --surface:#131c2c; --ink:#e4eaf4; --muted:#9aa8bf; --line:#26324a;
+  --accent:#5aa2f2; --accent-soft:#16294a; --harbour:#08182e; --harbour-ink:#dce8ff;
+  --warn:#f0a24a; --warn-soft:#3a2711; --ok:#5bc58d; --ok-soft:#13301f; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.7}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--harbour)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+h2{font-size:1.5rem;font-weight:800}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* masthead */
+.mast{background:var(--harbour);color:var(--harbour-ink)}
+.mast .wrap{padding-block:28px 22px;display:grid;gap:14px}
+.eyebrow{font-family:var(--display);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.mast h1{font-size:clamp(1.6rem,4.2vw,2.5rem);font-weight:800;letter-spacing:-.01em}
+.mast h1 small{display:block;font-size:.55em;font-weight:500;letter-spacing:0;opacity:.85;margin-top:4px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.9rem}
+.facts span b{font-weight:500;opacity:.7;margin-right:6px}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.tabs .wrap::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;appearance:none;border:0;background:none;color:var(--muted);font:500 .92rem var(--body);padding:13px 14px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+main .wrap{padding-block:30px 60px}
+section.panel{display:grid;gap:26px}
+.lead{color:var(--muted);max-width:68ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.grid2>*{min-width:0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:10px;align-content:start}
+.box h3{display:flex;align-items:baseline;gap:8px}
+ul.clean{margin:0;padding-left:1.15em;display:grid;gap:4px}
+.kv{display:grid;grid-template-columns:7em 1fr;gap:6px 14px}
+.kv dt{color:var(--muted);font-size:.88rem}
+.kv dd{margin:0;min-width:0}
+.chip{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);vertical-align:2px}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.note{border-left:3px solid var(--warn);background:var(--warn-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.92rem}
+.note.info{border-left-color:var(--accent);background:var(--accent-soft)}
+
+/* timeline */
+.timeline{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tl{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 20px;border-top:1px solid var(--line)}
+.tl:first-child{border-top:0}
+.tl .when{font-family:var(--mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.tl .when b{display:block;color:var(--ink);font-size:.95rem}
+.tl.key{background:var(--accent-soft)}
+.tl>div{min-width:0}
+
+/* flights */
+.flight{display:grid;grid-template-columns:auto 1fr auto 1fr;align-items:center;gap:6px 14px}
+.flight .code{font-family:var(--mono);font-size:1.6rem;font-weight:500;letter-spacing:.02em}
+.flight .arrow{color:var(--muted);text-align:center}
+.flight .meta{grid-column:1/-1;color:var(--muted);font-size:.85rem}
+.tableScroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:560px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;color:var(--muted);font-size:.8rem;letter-spacing:.04em}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.mine td{background:var(--accent-soft)}
+
+/* Q&A */
+.qa{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.qa summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:start;padding:18px 20px}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.qnum{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--accent);line-height:1.1}
+.qa summary h3{font-size:1.05rem}
+.qa summary .sub{color:var(--muted);font-size:.88rem;margin-top:2px}
+.qa summary .tog{color:var(--muted);font-family:var(--mono);transition:transform .2s}
+.qa[open] summary .tog{transform:rotate(45deg)}
+.qa .body{padding:0 20px 20px 78px;display:grid;gap:16px}
+.qa .body h4{margin:0 0 4px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:var(--display)}
+.qa .body>div{min-width:0}
+.ask{font-family:var(--body);background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:10px 14px;font-size:.92rem}
+.ask i{font-style:normal;color:var(--muted);display:block;font-size:.85rem}
+
+/* intro */
+.quote{font-family:var(--display);font-size:1.12rem;line-height:1.6;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 24px;max-width:72ch}
+.btn{appearance:none;border:1px solid var(--accent);background:var(--accent);color:#fff;font:600 .88rem var(--body);padding:7px 14px;border-radius:7px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* checklist */
+.check{display:grid;gap:2px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:9px 6px;border-radius:6px;cursor:pointer}
+.check label:hover{background:var(--bg)}
+.check input{width:18px;height:18px;margin-top:4px;accent-color:var(--accent);flex:0 0 auto}
+.check input:checked+span{color:var(--muted);text-decoration:line-through}
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .25s}
+
+/* notes */
+textarea{width:100%;min-height:96px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;background:var(--bg);color:var(--ink)}
+textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+
+/* glossary */
+.gsearch{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gsearch input{flex:1 1 260px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;background:var(--surface);color:var(--ink)}
+.gsearch input:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.gcat{display:grid;gap:10px}
+.gcat h3{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.glist{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gterm{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:4px 18px;padding:12px 18px;border-top:1px solid var(--line)}
+.gterm:first-child{border-top:0}
+.gterm dt{font-family:var(--display);font-weight:700}
+.gterm dt small{display:block;font-family:var(--body);font-weight:400;color:var(--muted);font-size:.82rem}
+.gterm dd{margin:0;min-width:0}
+@media (max-width:620px){.gterm{grid-template-columns:1fr}}
+
+footer{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line)}
+footer .wrap{padding-block:18px 28px}
+
+@media (max-width:620px){
+  .tl{grid-template-columns:1fr;gap:4px}
+  .qa .body{padding:0 18px 18px}
+  .qa summary{grid-template-columns:34px 1fr auto;gap:10px;padding:16px 18px}
+  .kv{grid-template-columns:1fr}
+  .kv dt{margin-top:6px}
+  .flight{grid-template-columns:1fr auto 1fr}
+  .flight .code{grid-column:1/-1;font-size:1.3rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="eyebrow">Microsoft × Intel · Invitation-only Partner Event</div>
+    <h1>Power On: Windows Means Business<small>Champion Summit (Asia)｜會前剪報與參考答案</small></h1>
+    <div class="facts">
+      <span><b>日期</b>2026/10/27（二）09:00 – 10/28（三）15:00</span>
+      <span><b>地點</b>Microsoft Office L27, 1 Denison St, North Sydney</span>
+      <span><b>時區</b>AEDT（UTC+11，比台灣快 3 小時）</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="頁面分頁">
+  <div class="wrap" role="tablist">
+    <button class="tab" role="tab" id="t-overview" data-tab="overview">活動總覽</button>
+    <button class="tab" role="tab" id="t-trip" data-tab="trip">行程與交通</button>
+    <button class="tab" role="tab" id="t-questions" data-tab="questions">5 個必問問題 · 參考答案</button>
+    <button class="tab" role="tab" id="t-tech" data-tab="tech">技術重點速記</button>
+    <button class="tab" role="tab" id="t-glossary" data-tab="glossary">名詞解釋</button>
+    <button class="tab" role="tab" id="t-network" data-tab="network">Networking</button>
+    <button class="tab" role="tab" id="t-after" data-tab="after">會後行動</button>
+    <button class="tab" role="tab" id="t-checklist" data-tab="checklist">行前檢查</button>
+  </div>
+</nav>
+
+<main><div class="wrap">
+
+<!-- ============ 活動總覽 ============ -->
+<section class="panel" id="overview" role="tabpanel" aria-labelledby="t-overview">
+  <div style="display:grid;gap:8px">
+    <h2>活動總覽</h2>
+    <p class="lead">掌握 Microsoft 與 Intel 在 FY27 的 Windows 商務成長、AI PC / Copilot+ PC、企業裝置更新與通路合作策略，並把現場資訊轉成台灣市場可執行的 GTM 與商機計畫。</p>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <h3>基本資訊</h3>
+      <dl class="kv">
+        <dt>活動名稱</dt><dd>Power On: Windows Means Business – Champion Summit (Asia)</dd>
+        <dt>時間</dt><dd>10/27（二）09:00 – 10/28（三）15:00（GMT+11）</dd>
+        <dt>地點</dt><dd>Microsoft Office, Level 27, 1 Denison Street, North Sydney NSW 2060</dd>
+        <dt>主辦</dt><dd>Microsoft × Intel（邀請制、需確認出席、不可轉寄）</dd>
+        <dt>報到</dt><dd>出示「Microsoft Event Registration Confirmation」信中的 QR Code <span class="chip ok">報名已確認</span></dd>
+        <dt>停車</dt><dd>Wilson Parking（Denison St / Walker St 交叉口）</dd>
+      </dl>
+    </div>
+    <div class="box">
+      <h3>三大核心主題</h3>
+      <ul class="clean">
+        <li><b>Windows Growth</b>：Windows 11 商務裝置更新、企業換機與成長機會</li>
+        <li><b>AI Adoption</b>：AI PC / Copilot+ PC 導入情境與商業價值</li>
+        <li><b>Modern Commercial Devices</b>：Intel Core Ultra、Intel vPro 與現代化商務裝置</li>
+      </ul>
+      <p class="lead" style="font-size:.9rem">形式包含專家演講、Hands-on 實作、分組討論與跨國夥伴交流。</p>
+    </div>
+  </div>
+
+  <div class="note info">這一頁是依據邀請函、報名確認信、會前剪報（docx 與圖卡）及差旅往來信件整理。「5 個必問問題」的參考答案是根據公開資訊推估的方向與話術，FY27 的實際 KPI、資源與獎勵方案請以現場 Microsoft / Intel 說法為準。</div>
+</section>
+
+<!-- ============ 行程與交通 ============ -->
+<section class="panel" id="trip" role="tabpanel" aria-labelledby="t-trip" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>行程與交通</h2>
+    <p class="lead">10/25 深夜出發，10/26 中午抵達，10/29 晚上返台。旅客姓名 <span class="mono">CHUNG/YIHTZUNG</span>，請確認與護照拼音一致。</p>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <span class="chip">去程 · 華航 CI051 · 777-300ER · 經濟艙</span>
+      <div class="flight">
+        <div class="code">TPE</div><div class="arrow">——— 9h25m ———›</div><div class="code" style="text-align:right">SYD</div>
+        <div class="meta">10/25（日）23:50 桃園 T2 出發 → 10/26（一）12:15 雪梨 T1 抵達</div>
+      </div>
+    </div>
+    <div class="box">
+      <span class="chip">回程 · 華航 CI052 · 777-300ER · 經濟艙</span>
+      <div class="flight">
+        <div class="code">SYD</div><div class="arrow">——— 9h10m ———›</div><div class="code" style="text-align:right">TPE</div>
+        <div class="meta">10/29（四）22:10 雪梨 T1 出發 → 10/30（五）04:20 桃園 T2 抵達</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;gap:12px">
+    <h3>每日時間軸</h3>
+    <div class="timeline">
+      <div class="tl"><div class="when"><b>10/25（日）</b>20:50 前</div><div>抵達桃園 T2 報到（國際線建議提前 3 小時）。出發前確認 ETA 電子簽證已核准。</div></div>
+      <div class="tl"><div class="when"><b>10/26（一）</b>12:15</div><div>抵達雪梨 T1 → 入住 Hotel Indigo Sydney Potts Point（2-14 Kings Cross Rd）。下午可先試走一趟到會場的路線，買好交通卡或確認信用卡感應付款可用。</div></div>
+      <div class="tl key"><div class="when"><b>10/27（二）</b>09:00</div><div>峰會 Day 1。建議 08:15 前出門、08:45 到場報到，留時間過大樓安檢。</div></div>
+      <div class="tl key"><div class="when"><b>10/28（三）</b>– 15:00</div><div>峰會 Day 2。最後一場結束前把名片與聯絡人整理好，現場約好會後追蹤時間。</div></div>
+      <div class="tl"><div class="when"><b>10/29（四）</b>11:00</div><div>退房。行李寄放飯店櫃台（見下方「退房後到登機前」）。</div></div>
+      <div class="tl"><div class="when"><b>10/29（四）</b>19:10 前</div><div>抵達雪梨 T1 國際航廈報到，CI052 22:10 起飛。</div></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <h3>飯店 → 會場怎麼去</h3>
+      <ul class="clean">
+        <li><b>火車＋地鐵（約 25 分鐘）</b>：Kings Cross 站搭 T4 往市區 → Martin Place 轉 Sydney Metro → Victoria Cross 站（North Sydney），出站步行約 3–5 分鐘到 1 Denison St。</li>
+        <li><b>Uber / 計程車（約 15–25 分鐘）</b>：經 Harbour Bridge，尖峰時段要多抓時間，過橋另收通行費。</li>
+        <li>大眾運輸可直接用有 contactless 的信用卡或手機感應進出站，不一定要買 Opal 卡。</li>
+      </ul>
+      <p class="lead" style="font-size:.85rem">出發前用 Google Maps 再確認一次即時班次。</p>
+    </div>
+    <div class="box">
+      <h3>微軟推薦飯店（皆在會場附近）</h3>
+      <ul class="clean">
+        <li>Citadines Walker North Sydney · 88 Walker St</li>
+        <li>Vibe Hotel North Sydney · 171 Pacific Hwy</li>
+        <li>Quest North Sydney · 223 Miller St</li>
+        <li>Meriton Suites North Sydney · 80 Arthur St</li>
+        <li>The Langham Sydney · 89-113 Kent St</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="display:grid;gap:12px">
+    <h3>你在信裡問的兩個問題</h3>
+    <div class="grid2">
+      <div class="box">
+        <h3>Q1：公司差旅預算是多少？</h3>
+        <p>信裡沒有寫出確切金額，但可以從旅行社的標註反推：</p>
+        <div class="tableScroll"><table>
+          <thead><tr><th>飯店</th><th>每晚</th><th>3 晚</th><th>早餐</th><th>預算</th></tr></thead>
+          <tbody>
+            <tr class="mine"><td>Hotel Indigo Potts Point</td><td class="num">TWD 11,000</td><td class="num">33,000</td><td>不含</td><td><span class="chip warn">超出</span></td></tr>
+            <tr><td>ibis budget Sydney East</td><td class="num">TWD 7,000</td><td class="num">21,000</td><td>含</td><td><span class="chip ok">符合</span></td></tr>
+            <tr><td>Mariners Court Hotel</td><td class="num">TWD 6,500</td><td class="num">19,500</td><td>含</td><td><span class="chip ok">符合</span></td></tr>
+          </tbody>
+        </table></div>
+        <p>由此判斷雪梨住宿上限落在 <b>每晚 TWD 7,000 以上、11,000 以下</b>。Indigo 每晚約超出 TWD 4,000，三晚約多 TWD 12,000（以 7,000 上限估）。</p>
+        <p><b>建議做法</b>：直接回信請 Henry 提供公司規定的雪梨每晚住宿上限；若要住 Indigo，事先問清楚是「超額部分自付」還是「主管簽核後可全額報支」，並把「與同行夥伴同住、方便交流」的理由寫進簽核說明。</p>
+      </div>
+      <div class="box">
+        <h3>Q2：10/29 退房 11:00 到 22:10 起飛之間怎麼辦？</h3>
+        <ul class="clean">
+          <li><b>行李寄放</b>：退房後把行李寄放在飯店櫃台，這是大部分飯店對住客的免費服務，最省事。</li>
+          <li><b>同行友人房間</b>：如果夥伴住到更晚，可以在他們房間休息；要先確認對方的退房時間。</li>
+          <li><b>延遲退房</b>：可詢問飯店 late check-out（通常到 14:00 左右，可能加價）。</li>
+          <li><b>出發時間</b>：Potts Point 到機場搭車約 20–30 分鐘（Kings Cross → T4 → Central 轉 T8 Airport Line）。建議 <span class="mono">18:15</span> 前回飯店取行李，<span class="mono">19:10</span> 前到 T1；華航櫃台通常起飛前 60 分鐘關閉。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <h3>入境證件 <span class="chip warn">出發前必辦</span></h3>
+      <ul class="clean">
+        <li>護照效期 6 個月以上，且有空白頁。</li>
+        <li>電子簽證 ETA（Subclass 601）：用手機下載 <b>AustralianETA</b> App 申請，需掃描護照晶片與自拍。</li>
+        <li>效期 12 個月（或護照效期），多次入境，每次最多停留 3 個月。</li>
+        <li>官方說明：<a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/electronic-travel-authority-601" target="_blank" rel="noopener">immi.homeaffairs.gov.au – ETA 601</a></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>機票規則與當地生活</h3>
+      <ul class="clean">
+        <li>開票後不可轉讓；更改或取消可能收罰金與手續費。</li>
+        <li>未登機（no-show）罰金 TWD 6,800。</li>
+        <li>免費託運 2 件，每件 23 kg。選位可在起飛前 2–48 小時線上報到時免費選。</li>
+        <li>會員卡號或特殊餐食需求，最晚出發前 3 天告知旅行社。</li>
+        <li>澳洲電壓 230V，插座 Type I（八字斜扁腳）。10 月底氣溫約 15–23°C，早晚帶薄外套。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 個問題 ============ -->
+<section class="panel" id="questions" role="tabpanel" aria-labelledby="t-questions" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>5 個必問問題 · 參考答案</h2>
+    <p class="lead">每題分成三塊：預期 Microsoft / Intel 會怎麼回答、可以追問的英文句子、以及這對展碁（Disti）代表什麼。微軟 FY27 期間為 2026/7/1 – 2027/6/30，現在是 FY27 Q2。</p>
+  </div>
+
+  <details class="qa" open>
+    <summary><span class="qnum">01</span><div><h3>FY27 Windows Commercial Device 的主要 KPI 與成長指標是什麼？</h3><p class="sub">Revenue、Windows 11 refresh、Copilot+ PC attach、M365 Copilot attach 的優先順序</p></div><span class="tog">+</span></summary>
+    <div class="body">
+      <div>
+        <h4>預期答案</h4>
+        <ul class="clean">
+          <li><b>Windows 11 commercial refresh</b> 仍是第一優先。Windows 10 已在 2025/10/14 結束支援，仍有大量企業裝置在用 ESU 撐著，換機量（units）與 Windows 11 Pro 商務機出貨是核心指標。</li>
+          <li><b>AI PC / Copilot+ PC mix</b>：新出貨中 AI PC、Copilot+ PC 的占比，以及搭 Intel Core Ultra（含 vPro）的商務機占比。</li>
+          <li><b>Attach rate</b>：每台裝置附帶的雲端服務，例如 M365 Business Premium / E3 / E5、Intune、Windows 365、M365 Copilot 授權。微軟越來越用「裝置帶動雲」來衡量通路價值。</li>
+          <li><b>Revenue / Pipeline</b>：通路營收與可追蹤的 pipeline，常以 Partner Center 申報的 deal 或 campaign 成效計算。</li>
+        </ul>
+      </div>
+      <div>
+        <h4>可追問</h4>
+        <div class="ask">"For FY27, how do you rank Windows 11 refresh units, Copilot+ PC mix and M365 Copilot attach? Which one is tied to partner incentives?"<i>FY27 這幾個指標的優先順序？哪一個跟夥伴獎勵直接掛鉤？</i></div>
+      </div>
+      <div>
+        <h4>對展碁的意義</h4>
+        <p>把我們的內部 KPI 對齊微軟計分方式：除了裝置台數，也要能回報每台裝置帶出的 M365 / Intune / Copilot 授權，才拿得到 attach 型的獎勵。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="qnum">02</span><div><h3>Copilot+ PC 在企業市場最適合的實際銷售情境是什麼？</h3><p class="sub">哪些工作負載真正需要 NPU；AI PC 與 Copilot+ PC 的區隔</p></div><span class="tog">+</span></summary>
+    <div class="body">
+      <div>
+        <h4>先釐清定義</h4>
+        <ul class="clean">
+          <li><b>AI PC</b>：泛指有 CPU + GPU + NPU 的電腦（如早期 Core Ultra Series 1），NPU 約 10–11 TOPS。</li>
+          <li><b>Copilot+ PC</b>：微軟認證規格，NPU <b>40 TOPS 以上</b>、記憶體 16 GB 以上、儲存 256 GB 以上。Intel 方面為 Core Ultra 200V（Lunar Lake）與 Core Ultra Series 3（Panther Lake）等。</li>
+          <li>Copilot+ PC 才有的 Windows 功能：Recall（預覽）、Click to Do、語意化 Windows 搜尋、即時字幕翻譯、Windows Studio Effects、設定裡的 AI agent。</li>
+        </ul>
+      </div>
+      <div>
+        <h4>最適合的銷售情境</h4>
+        <ul class="clean">
+          <li><b>大量線上會議的業務、主管</b>：Studio Effects（背景模糊、眼神校正、降噪）在 NPU 跑，不吃 CPU、省電，續航更長。</li>
+          <li><b>跨國團隊 / 客服</b>：即時字幕與翻譯可離線執行，不經過雲端。</li>
+          <li><b>知識工作者</b>：用自然語言搜尋本機檔案、Click to Do 快速摘要或改寫。</li>
+          <li><b>資料不能上雲的產業</b>（金融、醫療、政府、製造）：本機推論（on-device AI）可降低資料外流疑慮，ISV 也能用 Windows ML / Foundry Local 在 NPU 上跑自家模型。</li>
+          <li><b>行動辦公</b>：Lunar Lake / Panther Lake 的電池續航是很直接的賣點，不必先談 AI。</li>
+        </ul>
+      </div>
+      <div>
+        <h4>可追問</h4>
+        <div class="ask">"Which commercial workloads show measurable ROI on the NPU today, and do you have customer references in Asia we can reuse?"<i>哪些商務工作負載在 NPU 上已有可量化的效益？亞洲有沒有可以借用的客戶案例？</i></div>
+      </div>
+      <div>
+        <h4>對展碁的意義</h4>
+        <p>話術要分兩層：<b>所有商務機都該是 Windows 11 + Core Ultra + vPro</b>（安全與管理），<b>重度會議、行動、資料敏感的族群再升級 Copilot+ PC</b>。這樣不會因為 AI 功能還不夠成熟而卡住整體換機。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="qnum">03</span><div><h3>Microsoft × Intel 在 FY27 有哪些 Partner / Distributor 資源？</h3><p class="sub">MDF、Campaign、Workshop、POC、Device Seeding、Incentive</p></div><span class="tog">+</span></summary>
+    <div class="body">
+      <div>
+        <h4>預期會聽到的資源</h4>
+        <ul class="clean">
+          <li><b>Microsoft</b>：AI Cloud Partner Program 的 Windows / Surface / Copilot 相關獎勵、Partner Center 的 co-sell 與 campaign-in-a-box 素材、客戶 Workshop 或 Envisioning 補助、Copilot+ PC 展示機與 Demo 腳本、Windows 11 換機 Assessment 工具。</li>
+          <li><b>Intel</b>：Intel Partner Alliance 的點數與 MDF（co-marketing）、vPro 與 Core Ultra 的銷售訓練與認證、Demo 機與試用機（Device Seeding）、聯合活動補助。</li>
+          <li><b>三方聯合</b>：Microsoft + Intel + OEM 的 joint campaign，常以 Windows 10 EOS 換機或 AI PC 體驗活動為主題。</li>
+        </ul>
+      </div>
+      <div>
+        <h4>可追問（拿到具體資訊）</h4>
+        <div class="ask">"What is the application process and timeline for FY27 MDF and POC funding for distributors in Taiwan? Who is our local contact?"<i>台灣 Disti 申請 FY27 MDF 與 POC 經費的流程、時程與在地窗口是誰？</i></div>
+        <div class="ask">"Is there a device seeding program for Copilot+ PCs with vPro that we can use for dealer demos?"<i>有沒有 Copilot+ PC（vPro）的展示機計畫可給經銷商 Demo 用？</i></div>
+      </div>
+      <div>
+        <h4>對展碁的意義</h4>
+        <p>會議中記下每項資源的<b>名稱、申請門檻、截止日、窗口</b>，回台後整理成一張「FY27 可申請資源表」，直接接到 Workshop 與 POC 計畫上。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="qnum">04</span><div><h3>Windows 10 EOS 後，Distributor 應如何帶動企業換機？</h3><p class="sub">拆分 SMB、Enterprise、Education、Government</p></div><span class="tog">+</span></summary>
+    <div class="body">
+      <div>
+        <h4>現況</h4>
+        <p>Windows 10 已於 2025/10/14 終止支援。企業版 ESU（延伸安全性更新）第一年在 2026/10 到期，第二年價格加倍、第三年再加倍，最長到 2028/10。<b>現在正好是第二年續約的決策點</b>，是推換機最好的時機。</p>
+      </div>
+      <div>
+        <h4>分市場打法</h4>
+        <div class="tableScroll"><table>
+          <thead><tr><th>市場</th><th>痛點</th><th>建議方案</th></tr></thead>
+          <tbody>
+            <tr><td><b>SMB</b></td><td>沒有 IT 人員、預算有限、怕資安事件</td><td>Windows 11 Pro 商務機 + M365 Business Premium（Intune、Defender for Business）打包、分期或租賃，強調「ESU 的錢拿來換新機更划算」</td></tr>
+            <tr><td><b>Enterprise</b></td><td>裝置數量大、應用相容性、部署人力</td><td>先做 Assessment（盤點不支援 Win11 的機器）→ Autopilot 零接觸部署 → Intune + Autopatch 管理；高階族群配 Copilot+ PC 與 M365 Copilot 試點</td></tr>
+            <tr><td><b>Education</b></td><td>採購週期依學期與標案</td><td>對準寒暑假換機窗口，搭 Windows 11 SE / Education 授權與教育價機種，提供師資 AI 工具研習</td></tr>
+            <tr><td><b>Government</b></td><td>資安法規、資料在地、標案</td><td>主打 Secured-core PC、TPM 2.0、BitLocker、Windows Hello 與本機 AI（資料不出境），配合共同供應契約或專案標案</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div>
+        <h4>可追問</h4>
+        <div class="ask">"What does Microsoft see as the remaining Windows 10 installed base in Taiwan / Asia, and is there an ESU-to-refresh conversion incentive in FY27?"<i>台灣 / 亞洲還剩多少 Windows 10 裝置？FY27 有沒有 ESU 轉換機的獎勵？</i></div>
+      </div>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary><span class="qnum">05</span><div><h3>Windows 裝置如何與 Microsoft Cloud 做組合銷售？</h3><p class="sub">Device + M365 Business Premium + Intune + Defender + Copilot</p></div><span class="tog">+</span></summary>
+    <div class="body">
+      <div>
+        <h4>建議的三層組合</h4>
+        <div class="tableScroll"><table>
+          <thead><tr><th>層級</th><th>裝置</th><th>雲端服務</th><th>賣點</th></tr></thead>
+          <tbody>
+            <tr><td><b>基本安全</b></td><td>Windows 11 Pro + Core Ultra 商務機</td><td>M365 Business Premium（含 Intune、Defender for Business、Entra ID P1，最多 300 人）</td><td>一張授權搞定 Office、管理與資安</td></tr>
+            <tr><td><b>現代管理</b></td><td>Core Ultra vPro 商務機</td><td>+ Autopilot 部署、Windows Autopatch、（大型客戶）M365 E3 / E5</td><td>開箱即用、遠端管理、自動更新</td></tr>
+            <tr><td><b>AI 生產力</b></td><td>Copilot+ PC（vPro）</td><td>+ M365 Copilot、Windows 365 Cloud PC（遠端 / 外包人員）</td><td>本機 AI + 雲端 Copilot 的完整體驗</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div>
+        <h4>銷售動作</h4>
+        <ul class="clean">
+          <li>以「每人每月」來報價（裝置分期 + 授權），讓客戶比較的是總持有成本，而不是單機價格。</li>
+          <li>經銷商端提供一份標準 Bundle SKU 與報價範本，降低組合銷售的門檻。</li>
+          <li>用 Autopilot 示範「新機寄到員工手上、登入就完成設定」，是最容易讓 IT 主管買單的 Demo。</li>
+        </ul>
+      </div>
+      <div>
+        <h4>可追問</h4>
+        <div class="ask">"Is there a recommended FY27 bundle or campaign motion for Device + M365 Business Premium + Copilot, and how is the attach credited to distributors?"<i>FY27 有沒有建議的組合方案或 campaign？組合成交時 Disti 的 attach 怎麼計算？</i></div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ 技術重點 ============ -->
+<section class="panel" id="tech" role="tabpanel" aria-labelledby="t-tech" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>技術重點速記</h2>
+    <p class="lead">會前建議熟悉的主題，每項一兩句重點，現場聽講時可當對照。</p>
+  </div>
+  <div class="grid2">
+    <div class="box"><h3>Windows 11 Pro / Enterprise</h3><p>Pro 適合 SMB；Enterprise（E3 / E5 訂閱）多了進階安全與管理功能。硬體需 TPM 2.0 與受支援的 CPU，是舊機無法升級、必須換機的主因。</p></div>
+    <div class="box"><h3>Copilot+ PC 與 NPU</h3><p>NPU 40+ TOPS、16 GB RAM、256 GB 儲存。NPU 專跑持續性 AI 工作（視訊特效、字幕、本機模型），比 CPU / GPU 省電。</p></div>
+    <div class="box"><h3>Intel Core Ultra</h3><p>Series 2（200V Lunar Lake）與 Series 3（Panther Lake）NPU 達 Copilot+ 規格，主打續航與整合 GPU 效能。</p></div>
+    <div class="box"><h3>Intel vPro</h3><p>商務平台認證：硬體層安全（Intel Hardware Shield）、遠端管理（AMT，可在開機前或系統當機時維修）、穩定的平台生命週期。</p></div>
+    <div class="box"><h3>Microsoft 365 Copilot</h3><p>雲端 AI 助理，整合 Word、Excel、Outlook、Teams 與企業資料（Microsoft Graph）。與 Copilot+ PC 是兩件事：一個是授權服務，一個是裝置規格，可分開賣也可組合。</p></div>
+    <div class="box"><h3>Intune · Autopilot · Autopatch</h3><p>Intune 管裝置與 App 政策；Autopilot 讓新機零接觸部署；Autopatch 自動排程 Windows 與 Office 更新。</p></div>
+    <div class="box"><h3>Defender · Hello · BitLocker</h3><p>Defender for Endpoint / Business 做端點防護；Windows Hello 以臉部或指紋免密碼登入；BitLocker 整碟加密，筆電遺失時資料不外洩。</p></div>
+    <div class="box"><h3>Windows 365 Cloud PC</h3><p>在 Azure 上的雲端電腦，以每人每月計費。適合外包、短期專案、BYOD 與分公司，也可搭 Windows 365 Link 精簡終端。</p></div>
+  </div>
+</section>
+
+<!-- ============ 名詞解釋 ============ -->
+<section class="panel" id="glossary" role="tabpanel" aria-labelledby="t-glossary" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>名詞解釋</h2>
+    <p class="lead">會議中和信件裡常出現的縮寫與術語，依類別排列。</p>
+  </div>
+  <div class="gsearch">
+    <label for="gq" class="lead" style="font-size:.9rem">搜尋</label>
+    <input id="gq" type="search" placeholder="輸入關鍵字，例如 NPU、MDF、ESU" autocomplete="off">
+    <span class="mono lead" id="gcount" style="font-size:.85rem"></span>
+  </div>
+
+  <div class="gcat">
+    <h3>商業與通路</h3>
+    <dl class="glist">
+      <div class="gterm"><dt>FY27<small>Fiscal Year 2027</small></dt><dd>微軟會計年度 2027，期間為 2026/7/1 – 2027/6/30。Q1 是 7–9 月，Q2 是 10–12 月，依此類推。</dd></div>
+      <div class="gterm"><dt>KPI<small>Key Performance Indicator</small></dt><dd>關鍵績效指標，例如換機台數、Copilot+ PC 占比、搭售率。</dd></div>
+      <div class="gterm"><dt>GTM<small>Go-to-Market</small></dt><dd>上市與銷售策略：賣給誰、賣什麼組合、透過哪些通路、怎麼行銷。</dd></div>
+      <div class="gterm"><dt>Disti<small>Distributor</small></dt><dd>代理商 / 經銷總代理，例如展碁。向原廠進貨，再供貨給經銷商（Dealer / Reseller）。</dd></div>
+      <div class="gterm"><dt>Disti-Champ<small>Distributor Champion</small></dt><dd>各代理商指派的 Windows 種子窗口，負責把原廠策略與教材帶回本地推動。</dd></div>
+      <div class="gterm"><dt>TTT<small>Train the Trainer</small></dt><dd>講師培訓：先訓練種子講師，再由他們回國訓練經銷商與業務。</dd></div>
+      <div class="gterm"><dt>Attach / Attach rate<small>搭售率</small></dt><dd>賣一台裝置時，同時帶出的雲端或軟體授權比例，例如每 100 台筆電帶出多少套 M365。</dd></div>
+      <div class="gterm"><dt>Refresh<small>換機</small></dt><dd>企業汰換舊裝置的週期。Windows 11 refresh 指從 Windows 10 舊機換成 Windows 11 新機。</dd></div>
+      <div class="gterm"><dt>MDF<small>Market Development Funds</small></dt><dd>原廠提供給夥伴的行銷發展基金，可用於活動、廣告、研討會，通常需事前申請、事後核銷。</dd></div>
+      <div class="gterm"><dt>Co-op<small>Cooperative Marketing</small></dt><dd>依銷售額累積的共同行銷經費，與 MDF 類似，但額度通常和業績掛鉤。</dd></div>
+      <div class="gterm"><dt>Incentive<small>獎勵方案</small></dt><dd>原廠依達成目標給夥伴的回饋，例如 rebate、獎金、點數。</dd></div>
+      <div class="gterm"><dt>Co-sell<small>共同銷售</small></dt><dd>夥伴與微軟業務一起經營同一個客戶案子，通常需在 Partner Center 登錄。</dd></div>
+      <div class="gterm"><dt>POC<small>Proof of Concept</small></dt><dd>概念驗證 / 試點：讓客戶在小範圍先試用，證明效果再擴大採購。</dd></div>
+      <div class="gterm"><dt>Device Seeding<small>種子機計畫</small></dt><dd>原廠提供展示機或試用機給夥伴、客戶，用於 Demo 或 POC。</dd></div>
+      <div class="gterm"><dt>Campaign<small>行銷活動</small></dt><dd>有主題與期間的推廣專案，例如「Windows 10 EOS 換機季」。Campaign-in-a-box 指原廠提供的整套素材。</dd></div>
+      <div class="gterm"><dt>Workshop<small>工作坊</small></dt><dd>對客戶或經銷商的體驗與需求教育課程，常搭配原廠補助。</dd></div>
+      <div class="gterm"><dt>Dealer Enablement<small>經銷商賦能</small></dt><dd>讓經銷商有能力銷售：話術、產品比較、FAQ、Demo 腳本、認證訓練。</dd></div>
+      <div class="gterm"><dt>Pipeline<small>商機管道</small></dt><dd>尚未成交、正在追蹤的商機清單，依階段與預估金額管理。</dd></div>
+      <div class="gterm"><dt>Bundle / SKU<small>組合方案 / 料號</small></dt><dd>Bundle 是把裝置與授權包成一個方案；SKU 是可下單的商品料號。</dd></div>
+      <div class="gterm"><dt>TCO<small>Total Cost of Ownership</small></dt><dd>總持有成本，包含購買、部署、管理、資安與維修，不只看單機價格。</dd></div>
+      <div class="gterm"><dt>SMB / Enterprise<small>中小企業 / 大型企業</small></dt><dd>微軟通常以員工數區分，SMB 約 300 人以下，與 M365 Business 方案的人數上限一致。</dd></div>
+      <div class="gterm"><dt>OEM / ISV<small>原廠製造商 / 獨立軟體商</small></dt><dd>OEM 是 Dell、HP、Lenovo、ASUS、Acer 等品牌電腦廠；ISV 是開發商用軟體的公司。</dd></div>
+    </dl>
+  </div>
+
+  <div class="gcat">
+    <h3>Microsoft 計畫與平台</h3>
+    <dl class="glist">
+      <div class="gterm"><dt>AI Cloud Partner Program<small>MCAPP</small></dt><dd>微軟的夥伴計畫（前身為 Microsoft Partner Network），涵蓋夥伴等級、權益、獎勵與認證。</dd></div>
+      <div class="gterm"><dt>Partner Center<small>夥伴中心</small></dt><dd>微軟夥伴的入口網站，用來管理帳號、登錄商機、申請獎勵與查看報表。</dd></div>
+      <div class="gterm"><dt>Microsoft Graph<small>資料整合層</small></dt><dd>串起 Outlook、Teams、SharePoint、OneDrive 等資料的服務，M365 Copilot 依此理解企業內容。</dd></div>
+      <div class="gterm"><dt>Entra ID<small>原 Azure AD</small></dt><dd>微軟的雲端身分驗證與存取管理服務，負責登入、MFA 與條件式存取。</dd></div>
+      <div class="gterm"><dt>MFA<small>Multi-Factor Authentication</small></dt><dd>多重要素驗證，例如密碼加上手機 Authenticator 確認。</dd></div>
+    </dl>
+  </div>
+
+  <div class="gcat">
+    <h3>Windows 與 AI PC</h3>
+    <dl class="glist">
+      <div class="gterm"><dt>EOS<small>End of Support</small></dt><dd>終止支援。Windows 10 已於 2025/10/14 EOS，之後不再提供免費安全更新。</dd></div>
+      <div class="gterm"><dt>ESU<small>Extended Security Updates</small></dt><dd>延伸安全性更新，付費才能繼續取得 Windows 10 安全修補。企業版最多 3 年，價格逐年加倍。</dd></div>
+      <div class="gterm"><dt>Windows 11 Pro / Enterprise</dt><dd>Pro 是商務基本版；Enterprise 透過 E3 / E5 訂閱提供，多了進階安全與管理功能。</dd></div>
+      <div class="gterm"><dt>AI PC</dt><dd>泛指內建 NPU、能在本機執行 AI 工作的電腦，規格門檻沒有統一定義。</dd></div>
+      <div class="gterm"><dt>Copilot+ PC</dt><dd>微軟認證的 AI PC 等級：NPU 40 TOPS 以上、16 GB RAM、256 GB 儲存，才能使用 Recall、Click to Do 等專屬功能。</dd></div>
+      <div class="gterm"><dt>NPU<small>Neural Processing Unit</small></dt><dd>神經網路處理器，專門執行 AI 推論，比 CPU / GPU 更省電，適合長時間跑的 AI 工作。</dd></div>
+      <div class="gterm"><dt>TOPS<small>Tera Operations Per Second</small></dt><dd>每秒兆次運算，用來衡量 NPU 的 AI 運算能力。</dd></div>
+      <div class="gterm"><dt>On-device AI<small>本機 AI</small></dt><dd>AI 模型在電腦本機執行，資料不必上傳雲端，延遲低、隱私較好。</dd></div>
+      <div class="gterm"><dt>Recall</dt><dd>Copilot+ PC 功能，定期擷取畫面並在本機建立索引，讓使用者用自然語言找回看過的內容。企業可用政策控管。</dd></div>
+      <div class="gterm"><dt>Click to Do</dt><dd>Copilot+ PC 功能，對畫面上的文字或圖片直接執行 AI 動作，例如摘要、改寫、去背。</dd></div>
+      <div class="gterm"><dt>Windows Studio Effects</dt><dd>由 NPU 執行的視訊效果：背景模糊、眼神校正、自動取景、語音降噪。</dd></div>
+      <div class="gterm"><dt>Windows ML / Foundry Local</dt><dd>讓開發者在 Windows 本機的 NPU / GPU 上執行 AI 模型的平台與工具。</dd></div>
+      <div class="gterm"><dt>Secured-core PC</dt><dd>符合微軟最高硬體安全規範的電腦，從韌體到作業系統層層防護。</dd></div>
+      <div class="gterm"><dt>TPM 2.0<small>Trusted Platform Module</small></dt><dd>主機板上的安全晶片，存放加密金鑰，是 Windows 11 的必要條件。</dd></div>
+      <div class="gterm"><dt>BitLocker</dt><dd>Windows 的整碟加密功能，筆電遺失時資料無法被讀取。</dd></div>
+      <div class="gterm"><dt>Windows Hello</dt><dd>用臉部辨識、指紋或 PIN 登入 Windows，取代密碼。</dd></div>
+    </dl>
+  </div>
+
+  <div class="gcat">
+    <h3>管理、資安與雲端</h3>
+    <dl class="glist">
+      <div class="gterm"><dt>Microsoft 365 Business Premium</dt><dd>給 300 人以下企業的方案，含 Office 應用、Exchange、Teams，加上 Intune、Defender for Business、Entra ID P1。</dd></div>
+      <div class="gterm"><dt>Microsoft 365 E3 / E5</dt><dd>大型企業方案。E5 比 E3 多了進階資安、合規與 Power BI Pro 等功能。</dd></div>
+      <div class="gterm"><dt>Microsoft 365 Copilot</dt><dd>付費的 AI 助理授權，在 Word、Excel、PowerPoint、Outlook、Teams 中結合企業資料協助工作。不限定 Copilot+ PC 才能用。</dd></div>
+      <div class="gterm"><dt>Intune</dt><dd>雲端裝置管理（MDM / MAM），派送設定、App 與安全政策，也能管理手機。</dd></div>
+      <div class="gterm"><dt>Windows Autopilot</dt><dd>零接觸部署：新機直接寄給員工，開機登入公司帳號就自動完成設定。</dd></div>
+      <div class="gterm"><dt>Windows Autopatch</dt><dd>由微軟自動排程與分批推送 Windows、Office、驅動程式更新的服務。</dd></div>
+      <div class="gterm"><dt>Defender for Endpoint / Business</dt><dd>微軟的端點防護與偵測回應（EDR）。Business 版是給 SMB 的精簡版，含在 Business Premium 中。</dd></div>
+      <div class="gterm"><dt>Windows 365<small>Cloud PC</small></dt><dd>在 Azure 上執行的雲端 Windows 電腦，以每人每月計費，任何裝置都能連線使用。</dd></div>
+      <div class="gterm"><dt>Windows 365 Link</dt><dd>微軟推出的精簡型終端設備，開機直接連到 Windows 365 雲端電腦。</dd></div>
+      <div class="gterm"><dt>BYOD<small>Bring Your Own Device</small></dt><dd>員工使用自己的裝置辦公，常用 Intune App 保護或 Windows 365 控管公司資料。</dd></div>
+    </dl>
+  </div>
+
+  <div class="gcat">
+    <h3>Intel</h3>
+    <dl class="glist">
+      <div class="gterm"><dt>Intel Core Ultra</dt><dd>Intel 內建 NPU 的處理器品牌。Series 1 為 Meteor Lake，Series 2（200V）為 Lunar Lake，Series 3 為 Panther Lake。</dd></div>
+      <div class="gterm"><dt>Lunar Lake / Panther Lake</dt><dd>Intel 處理器的研發代號。兩者的 NPU 都達 Copilot+ PC 規格，主打省電與長續航。</dd></div>
+      <div class="gterm"><dt>Intel vPro</dt><dd>Intel 商務平台認證，包含硬體層安全、遠端管理與穩定的平台生命週期。</dd></div>
+      <div class="gterm"><dt>Intel AMT<small>Active Management Technology</small></dt><dd>vPro 的遠端管理技術，即使電腦當機或未開機，IT 也能遠端開機、修復、重灌。</dd></div>
+      <div class="gterm"><dt>Intel Hardware Shield</dt><dd>vPro 的硬體層資安功能，協助偵測韌體攻擊與勒索軟體。</dd></div>
+      <div class="gterm"><dt>Intel Partner Alliance</dt><dd>Intel 的夥伴計畫，提供訓練、點數獎勵、MDF 與行銷資源。</dd></div>
+    </dl>
+  </div>
+
+  <div class="gcat">
+    <h3>差旅</h3>
+    <dl class="glist">
+      <div class="gterm"><dt>ETA（Subclass 601）<small>Electronic Travel Authority</small></dt><dd>澳洲電子旅行憑證，用 AustralianETA App 申請，12 個月內可多次入境，每次最多停留 3 個月。</dd></div>
+      <div class="gterm"><dt>AEDT<small>Australian Eastern Daylight Time</small></dt><dd>澳洲東部夏令時間（UTC+11），比台灣快 3 小時。</dd></div>
+      <div class="gterm"><dt>Opal</dt><dd>雪梨的大眾運輸電子票卡。也可直接用 contactless 信用卡或手機感應搭乘。</dd></div>
+      <div class="gterm"><dt>Type I 插座</dt><dd>澳洲的插座規格，兩支斜扁腳（呈八字），電壓 230V。</dd></div>
+      <div class="gterm"><dt>No-show</dt><dd>訂了機位卻沒登機也沒事先取消。本次機票未登機罰金 TWD 6,800。</dd></div>
+    </dl>
+  </div>
+  <p class="lead" id="gempty" hidden>找不到符合的名詞。</p>
+</section>
+
+<!-- ============ Networking ============ -->
+<section class="panel" id="network" role="tabpanel" aria-labelledby="t-network" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>Networking</h2>
+    <p class="lead">30 秒英文自我介紹，以及每類交流對象要拿到的資訊。</p>
+  </div>
+  <div style="display:grid;gap:10px">
+    <h3>30 秒自我介紹</h3>
+    <p class="quote" id="intro">“Weblink is one of Taiwan’s leading ICT distributors and Microsoft partners. We cover Microsoft Cloud, Azure, Microsoft 365, security, endpoint solutions and commercial devices. For FY27, we are especially interested in combining Windows 11 and Copilot+ PCs with Microsoft 365 Copilot, Intune and security solutions to create a complete AI PC go-to-market offering.”</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" id="copyIntro" type="button">複製英文介紹</button><span id="copyMsg" class="lead" style="font-size:.85rem" aria-live="polite"></span></div>
+  </div>
+  <div class="grid2">
+    <div class="box"><h3>Microsoft</h3><p>確認 FY27 Windows / Copilot+ PC 策略、通路 KPI、GTM 與支援資源。</p></div>
+    <div class="box"><h3>Intel</h3><p>確認 Core Ultra / vPro 商務定位、共同 Campaign 與企業導入案例。</p></div>
+    <div class="box"><h3>其他國家 Partner / Distributor</h3><p>了解各市場做法、成功案例與可複製的銷售模式。可問：“What has worked best for you in driving Windows 11 refresh with SMB customers?”</p></div>
+    <div class="box"><h3>建立後續窗口</h3><p>每場 Session 後取得姓名、職稱、Email / LinkedIn，並約好下一步。名片背面寫下對話重點，回飯店當晚整理。</p></div>
+  </div>
+</section>
+
+<!-- ============ 會後行動 ============ -->
+<section class="panel" id="after" role="tabpanel" aria-labelledby="t-after" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>會後行動</h2>
+    <p class="lead">要帶回台灣的成果，以及建議形成的「展碁 FY27 AI PC 行動計畫」。下方紀錄欄只存在你這台裝置的瀏覽器裡。</p>
+  </div>
+  <div class="grid2">
+    <div class="box">
+      <h3>應帶回台灣的資訊</h3>
+      <ul class="clean">
+        <li>Microsoft FY27 Windows / AI PC 策略</li>
+        <li>Intel FY27 策略與產品重點</li>
+        <li>Partner / Distributor Incentive 與 Program</li>
+        <li>可執行的 Campaign / Workshop</li>
+        <li>Enterprise / SMB 換機商機與 Copilot+ PC 案例</li>
+        <li>與 M365 Copilot 的整合方案、台灣市場 GTM 建議</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>展碁 FY27 AI PC 行動計畫</h3>
+      <ul class="clean">
+        <li><b>AI PC / Copilot+ PC Workshop</b>：對經銷商與企業客戶做體驗與需求教育</li>
+        <li><b>Dealer Enablement</b>：銷售話術、產品比較、FAQ、Demo 情境</li>
+        <li><b>Enterprise POC</b>：鎖定有換機或 AI 導入需求的客戶試點</li>
+        <li><b>Solution Attach</b>：Copilot+ PC + M365 Copilot + Intune + Defender</li>
+        <li><b>Pipeline Review</b>：活動後商機納入 FY27 Q2 / Q3 pipeline 追蹤</li>
+      </ul>
+    </div>
+  </div>
+  <div style="display:grid;gap:12px">
+    <h3>會後紀錄欄</h3>
+    <div class="grid2">
+      <div class="box"><label for="n-ms"><b>Microsoft 重點</b></label><textarea id="n-ms" data-note></textarea></div>
+      <div class="box"><label for="n-intel"><b>Intel 重點</b></label><textarea id="n-intel" data-note></textarea></div>
+      <div class="box"><label for="n-res"><b>可用 Partner 資源</b></label><textarea id="n-res" data-note></textarea></div>
+      <div class="box"><label for="n-opp"><b>可落地商機</b></label><textarea id="n-opp" data-note></textarea></div>
+    </div>
+    <div class="box"><label for="n-act"><b>後續聯絡 / Action</b></label><textarea id="n-act" data-note></textarea></div>
+  </div>
+</section>
+
+<!-- ============ 行前檢查 ============ -->
+<section class="panel" id="checklist" role="tabpanel" aria-labelledby="t-checklist" hidden>
+  <div style="display:grid;gap:8px">
+    <h2>行前檢查</h2>
+    <p class="lead">打勾狀態會記在這台裝置的瀏覽器中。</p>
+  </div>
+  <div class="box" style="gap:14px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap"><h3>完成度</h3><span class="mono" id="pct">0 / 0</span></div>
+    <div class="progress"><i id="bar"></i></div>
+    <div class="grid2" style="gap:6px 24px">
+      <div class="check">
+        <label><input type="checkbox" id="c1"><span>ETA 電子簽證已核准</span></label>
+        <label><input type="checkbox" id="c2"><span>護照（效期 6 個月以上）</span></label>
+        <label><input type="checkbox" id="c3"><span>報名確認信與 QR Code 已存手機 / 截圖</span></label>
+        <label><input type="checkbox" id="c4"><span>機票與飯店已確認（回覆 Henry）</span></label>
+        <label><input type="checkbox" id="c5"><span>確認住宿預算與超額處理方式</span></label>
+        <label><input type="checkbox" id="c6"><span>名片 30–50 張</span></label>
+        <label><input type="checkbox" id="c7"><span>筆電、充電器、USB-C 充電器、行動電源</span></label>
+      </div>
+      <div class="check">
+        <label><input type="checkbox" id="c8"><span>澳洲 Type I 轉接頭</span></label>
+        <label><input type="checkbox" id="c9"><span>手機、耳機</span></label>
+        <label><input type="checkbox" id="c10"><span>Microsoft / 公司帳號可登入，MFA 可用</span></label>
+        <label><input type="checkbox" id="c11"><span>5 個問題與追問句已熟悉</span></label>
+        <label><input type="checkbox" id="c12"><span>英文自我介紹練習過</span></label>
+        <label><input type="checkbox" id="c13"><span>飯店到會場路線已確認</span></label>
+        <label><input type="checkbox" id="c14"><span>商務休閒服裝、薄外套</span></label>
+      </div>
+    </div>
+    <div><button class="btn ghost" id="resetChecks" type="button">清除全部勾選</button></div>
+  </div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">資料來源：Microsoft × Intel 邀請函、Microsoft Event Registration Confirmation、會前剪報、旅行社機票與飯店報價信（2026/10）。參考答案為會前準備用的推估，實際內容以活動現場說明為準。</div></footer>
+
+<script>
+(function(){
+  var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  var ids=tabs.map(function(t){return t.dataset.tab});
+  function show(id,push){
+    if(ids.indexOf(id)<0)id='overview';
+    tabs.forEach(function(t){var on=t.dataset.tab===id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});
+    ids.forEach(function(i){document.getElementById(i).hidden=i!==id});
+    if(push){
+      try{history.replaceState(null,'','#'+id)}catch(e){}
+      var nav=document.querySelector('.tabs'),top=document.querySelector('main').getBoundingClientRect().top+window.pageYOffset-nav.offsetHeight;
+      if(window.pageYOffset>top)window.scrollTo(0,top);
+    }
+    var cur=document.getElementById('t-'+id);if(cur&&cur.scrollIntoView)cur.scrollIntoView({block:'nearest',inline:'nearest'});
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){show(t.dataset.tab,true)});
+    t.addEventListener('keydown',function(e){
+      var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;
+      var n=tabs[(i+d+tabs.length)%tabs.length];n.focus();show(n.dataset.tab,true);
+    });
+  });
+  show((location.hash||'').slice(1),false);
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1),false)});
+
+  // checklist
+  var boxes=[].slice.call(document.querySelectorAll('.check input'));
+  function update(){var n=boxes.filter(function(b){return b.checked}).length;document.getElementById('pct').textContent=n+' / '+boxes.length;document.getElementById('bar').style.width=(n/boxes.length*100)+'%'}
+  boxes.forEach(function(b){b.checked=store.get('syd-'+b.id)==='1';b.addEventListener('change',function(){store.set('syd-'+b.id,b.checked?'1':'0');update()})});
+  document.getElementById('resetChecks').addEventListener('click',function(){boxes.forEach(function(b){b.checked=false;store.set('syd-'+b.id,'0')});update()});
+  update();
+
+  // notes
+  [].slice.call(document.querySelectorAll('[data-note]')).forEach(function(t){
+    var v=store.get('syd-'+t.id);if(v)t.value=v;
+    t.addEventListener('input',function(){store.set('syd-'+t.id,t.value)});
+  });
+
+  // glossary filter
+  var gq=document.getElementById('gq'),terms=[].slice.call(document.querySelectorAll('.gterm')),cats=[].slice.call(document.querySelectorAll('.gcat'));
+  function filterG(){
+    var q=gq.value.trim().toLowerCase(),n=0;
+    terms.forEach(function(t){var hit=!q||t.textContent.toLowerCase().indexOf(q)>=0;t.hidden=!hit;if(hit)n++});
+    cats.forEach(function(c){c.hidden=!c.querySelector('.gterm:not([hidden])')});
+    document.getElementById('gcount').textContent=n+' / '+terms.length;
+    document.getElementById('gempty').hidden=n>0;
+  }
+  gq.addEventListener('input',filterG);filterG();
+
+  // copy intro
+  document.getElementById('copyIntro').addEventListener('click',function(){
+    var txt=document.getElementById('intro').textContent.replace(/[“”]/g,'').trim(),msg=document.getElementById('copyMsg');
+    function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('intro'));var s=getSelection();s.removeAllRanges();s.addRange(r);msg.textContent='已選取文字，請按 Ctrl+C 複製'}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){msg.textContent='已複製'},fallback)}else fallback();
+  });
+})();
+</script>
+
+</body>
+</html>
