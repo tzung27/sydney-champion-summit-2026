@@ -608,12 +608,33 @@ footer .wrap{padding-block:18px 28px}
 <section class="panel" id="network" role="tabpanel" aria-labelledby="t-network" hidden>
   <div style="display:grid;gap:8px">
     <h2>Networking</h2>
-    <p class="lead">30 秒英文自我介紹，以及每類交流對象要拿到的資訊。</p>
+    <p class="lead">兩種英文自我介紹，以及每類交流對象要拿到的資訊。</p>
   </div>
   <div style="display:grid;gap:10px">
-    <h3>30 秒自我介紹</h3>
+    <h3>自我介紹 A：公司版（30 秒）</h3>
+    <p class="lead" style="font-size:.9rem">介紹展碁與 FY27 方向，適合遇到 Microsoft / Intel 主管時使用。</p>
     <p class="quote" id="intro">“Weblink is one of Taiwan’s leading ICT distributors and Microsoft partners. We cover Microsoft Cloud, Azure, Microsoft 365, security, endpoint solutions and commercial devices. For FY27, we are especially interested in combining Windows 11 and Copilot+ PCs with Microsoft 365 Copilot, Intune and security solutions to create a complete AI PC go-to-market offering.”</p>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" id="copyIntro" type="button">複製英文介紹</button><span id="copyMsg" class="lead" style="font-size:.85rem" aria-live="polite"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" type="button" data-copy="intro">複製英文介紹</button><span class="lead copyMsg" style="font-size:.85rem" aria-live="polite"></span></div>
+  </div>
+
+  <div style="display:grid;gap:10px">
+    <h3>自我介紹 B：Allen Chung · 來吸取經驗（約 45 秒）</h3>
+    <p class="lead" style="font-size:.9rem">以個人身分開場，主動請教對方經驗，適合和其他國家 Partner / Distributor 交流時使用。</p>
+    <p class="quote" id="introAllen">“Hi, I’m Allen Chung from Weblink International in Taiwan. I’m on the technical support team in our software product marketing division, so I help our dealers and customers make Windows, Microsoft 365 and device management work in real deployments. I’m here mainly to learn from all of you. Since Windows 10 support has ended, I’d love to hear how you are turning ESU customers into Windows 11 refresh deals, which business scenarios really sell Copilot+ PCs and the NPU, and how you bundle devices with Microsoft 365 Business Premium, Intune, Defender and Copilot. I’m also curious which Microsoft and Intel programs, such as POC funding, device seeding or customer workshops, have worked best in your market. I’d be glad to share what we see in Taiwan and keep in touch after the event.”</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" type="button" data-copy="introAllen">複製英文介紹</button><span class="lead copyMsg" style="font-size:.85rem" aria-live="polite"></span></div>
+    <div class="box">
+      <h3>中文對照</h3>
+      <p>大家好，我是台灣展碁國際的 Allen Chung，在軟體產品行銷事業處技術支援部，平常協助經銷商與客戶把 Windows、Microsoft 365 和裝置管理實際導入。這次主要是來向大家學習的。Windows 10 已經終止支援，我很想知道各位如何把還在用 ESU 的客戶轉成 Windows 11 換機案、哪些商務情境最能賣出 Copilot+ PC 與 NPU 的價值，以及怎麼把裝置和 M365 Business Premium、Intune、Defender、Copilot 組合銷售。我也想了解在你們的市場裡，哪些 Microsoft 與 Intel 的資源最有用，例如 POC 經費、展示機計畫或客戶工作坊。我也很樂意分享台灣市場的狀況，會後保持聯絡。</p>
+    </div>
+    <div class="box">
+      <h3>對方回應後可接的追問</h3>
+      <ul class="clean">
+        <li>“What was the first step that got your SMB customers to move off Windows 10?”<br><span class="lead" style="font-size:.88rem">讓 SMB 客戶願意離開 Windows 10 的第一步是什麼？</span></li>
+        <li>“Do you lead with the device or with Microsoft 365 when you pitch a bundle?”<br><span class="lead" style="font-size:.88rem">推組合方案時，你們先談裝置還是先談 M365？</span></li>
+        <li>“How do you run a Copilot+ PC demo that convinces an IT manager?”<br><span class="lead" style="font-size:.88rem">怎麼做 Copilot+ PC 的 Demo 才能說服 IT 主管？</span></li>
+        <li>“Can I connect with you on LinkedIn to follow up?”<br><span class="lead" style="font-size:.88rem">可以加你 LinkedIn 之後再聯絡嗎？</span></li>
+      </ul>
+    </div>
   </div>
   <div class="grid2">
     <div class="box"><h3>Microsoft</h3><p>確認 FY27 Windows / Copilot+ PC 策略、通路 KPI、GTM 與支援資源。</p></div>
@@ -752,10 +773,12 @@ footer .wrap{padding-block:18px 28px}
   gq.addEventListener('input',filterG);filterG();
 
   // copy intro
-  document.getElementById('copyIntro').addEventListener('click',function(){
-    var txt=document.getElementById('intro').textContent.replace(/[“”]/g,'').trim(),msg=document.getElementById('copyMsg');
-    function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('intro'));var s=getSelection();s.removeAllRanges();s.addRange(r);msg.textContent='已選取文字，請按 Ctrl+C 複製'}
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){msg.textContent='已複製'},fallback)}else fallback();
+  [].slice.call(document.querySelectorAll('[data-copy]')).forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var el=document.getElementById(btn.dataset.copy),txt=el.textContent.replace(/[“”]/g,'').trim(),msg=btn.parentNode.querySelector('.copyMsg');
+      function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);msg.textContent='已選取文字，請按 Ctrl+C 複製'}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){msg.textContent='已複製'},fallback)}else fallback();
+    });
   });
 })();
 </script>
